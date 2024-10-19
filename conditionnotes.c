@@ -10,9 +10,11 @@ int main() {
 
     if (x > y && x > z) {
         printf("The highest value is: %d\n", x);
-    } else if (y > z) {
+    } 
+    else if (y > z) {
         printf("The highest value is: %d\n", y);
-    } else {
+    } 
+    else {
         printf("The highest value is: %d\n", z);
     }
 
