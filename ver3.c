@@ -2,8 +2,40 @@
 #include <stdlib.h>
 #include <time.h>
 
-int getRandomPrice() {
-    return rand() % 21 + 80;
+// Define constants for trends
+#define SCRAP 0
+#define NOMINAL 1
+#define PRIMUS 2
+
+int getRandomPrice(int generation_cost, int current_trend) {
+    int min_price, max_price;
+
+    switch (current_trend) {
+        case SCRAP:
+            min_price = 20;
+            max_price = generation_cost - 10;
+            break;
+        case NOMINAL:
+            min_price = 80;
+            max_price = (int)(generation_cost * 1.05); // 105% of generation cost
+            break;
+        case PRIMUS:
+            min_price = generation_cost;
+            max_price = generation_cost * 4; // 400% of generation cost
+            break;
+        default:
+            min_price = 0; // Default values (shouldn't happen)
+            max_price = 0;
+            break;
+    }
+
+    // Ensure the max price is not less than min price
+    if (max_price < min_price) {
+        max_price = min_price;
+    }
+
+    // Generate a random price between min_price and max_price
+    return (rand() % (max_price - min_price + 1)) + min_price;
 }
 
 void displayStatus(int week, int day, int energon, int stacks_in_inventory) {
@@ -38,7 +70,7 @@ void generateCubes(int *energon, int *stacks_in_inventory) {
     }
 }
 
-void sellCubes(int *energon, int *stacks_in_inventory, int day) {
+void sellCubes(int *energon, int *stacks_in_inventory, int day, int generation_cost) {
     int price_per_cube;
     int stacks;
     char proceed;
@@ -48,7 +80,10 @@ void sellCubes(int *energon, int *stacks_in_inventory, int day) {
         return;
     }
 
-    price_per_cube = getRandomPrice();
+    // Randomly select a trend for the day
+    int current_trend = rand() % 3; // Randomly choose between 0, 1, or 2 (SCRAP, NOMINAL, PRIMUS)
+
+    price_per_cube = getRandomPrice(generation_cost, current_trend);
     int sale_price_per_stack = price_per_cube * 10;
 
     printf("Swindle is buying Energon Cubes for %d Energon per cube.\n", price_per_cube);
@@ -94,13 +129,15 @@ int main() {
         printf("\n--- Week %d ---\n", week);
         displayStatus(week, 1, energon, stacks_in_inventory);
 
+        // Generate cubes and set the generation cost for the week
+        int generation_cost = rand() % 41 + 80; // Cost to generate a cube
         generateCubes(&energon, &stacks_in_inventory);
 
         for (int day = 1; day <= 7; day++) {
             printf("\nWeek %d Day %d\n", week, day);
             displayStatus(week, day, energon, stacks_in_inventory);
 
-            sellCubes(&energon, &stacks_in_inventory, day);
+            sellCubes(&energon, &stacks_in_inventory, day, generation_cost);
 
             if (energon >= 1000000) {
                 printf("Congratulations! You have reached 1,000,000 Energon!\n");
