@@ -8,7 +8,8 @@ else
 }
 
 int getAction(int action) {
-	switch (action){
+	switch (action)
+  {
 		case 1: return -3;
 		case 2: return -7;
 		case 3: return 3;
