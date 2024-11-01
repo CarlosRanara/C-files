@@ -92,6 +92,7 @@ void sellCubes(int *energon, int *stacks_in_inventory, int generation_cost, int 
 
     printf("Swindle is buying Energon Cubes for %d Energon per cube.\n", price_per_cube);
     printf("You can earn %d Energon per stack.\n", sale_price_per_stack);
+<<<<<<< HEAD
 
     while (1) { // Loop until a valid input or cancellation
         printf("How many stacks do you wish to sell? ");
@@ -126,6 +127,29 @@ void sellCubes(int *energon, int *stacks_in_inventory, int generation_cost, int 
 }
 
 
+=======
+    printf("How many stacks do you wish to sell? ");
+    scanf("%d", &stacks);
+
+    if (stacks > *stacks_in_inventory) {
+        printf("Not enough stacks in inventory.\n");
+        return;
+    }
+
+    printf("%d stacks are about to be sold, proceed? (y/n) ", stacks);
+    scanf(" %c", &proceed);
+    if (proceed == 'y' || proceed == 'Y') {
+        int total_sale = sale_price_per_stack * stacks;
+        *energon += total_sale;
+        *stacks_in_inventory -= stacks;
+        printf("%d stacks sold.\n", stacks);
+        printf("You earned %d Energon.\n", total_sale);
+    } else {
+        printf("Sale canceled.\n");
+    }
+}
+
+>>>>>>> cae04a2 (rahh)
 void expireCubes(int *stacks_in_inventory) {
     if (*stacks_in_inventory > 0) {
         printf("\nExpiring Energon Cubes – The generated cubes expire at the end of the 7th day.\n");
@@ -152,7 +176,11 @@ int main() {
 
         // Determine the weekly trend randomly at the start of the week
         int current_trend = rand() % 3; // Randomly choose between SCRAP, NOMINAL, or PRIMUS
+<<<<<<< HEAD
         printf("Trend for Week %d: %d\n", week, current_trend);  // Debug print for trend   PLEASE THIS IS FOR TESTING PLEASE DELETE ME KILL ME 
+=======
+        printf("Trend for Week %d: %d\n", week, current_trend);  // Debug print for trend
+>>>>>>> cae04a2 (rahh)
 
         for (int day = 1; day <= 7; day++) {
             printf("\nWeek %d Day %d\n", week, day);
